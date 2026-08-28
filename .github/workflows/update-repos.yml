@@ -1,0 +1,74 @@
+name: Update Featured Repos
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Every 6 hours
+  workflow_dispatch:       # Manual trigger
+  push:
+    branches: [main]
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch repos and update README
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            // Fetch all public repos
+            const repos = await github.rest.repos.listForUser({
+              username: 'GRANTON-ui',
+              type: 'public',
+              sort: 'updated',
+              per_page: 100,
+            });
+
+            // Filter out the profile repo itself, sort by stars then by date
+            const filtered = repos.data
+              .filter(r => r.name !== 'GRANTON-ui' && !r.fork)
+              .sort((a, b) => b.stargazers_count - a.stargazers_count);
+
+            // Build the featured list
+            const lines = filtered.map(r => {
+              const lang = r.language ? ` \`${r.language}\`` : '';
+              const stars = r.stargazers_count > 0 ? ` ⭐ ${r.stargazers_count}` : '';
+              const desc = r.description || 'No description.';
+              return `- [**${r.name}**](${r.html_url}) — ${desc}${lang}${stars}`;
+            });
+
+            const block = lines.length > 0
+              ? lines.join('\n')
+              : '_No public repos yet._';
+
+            // Read README and replace between markers
+            let readme = fs.readFileSync('README.md', 'utf-8');
+            const startMarker = '<!-- REPOS:START -->';
+            const endMarker = '<!-- REPOS:END -->';
+            const startIdx = readme.indexOf(startMarker);
+            const endIdx = readme.indexOf(endMarker);
+
+            if (startIdx !== -1 && endIdx !== -1) {
+              readme =
+                readme.substring(0, startIdx + startMarker.length) +
+                '\n' + block + '\n' +
+                readme.substring(endIdx);
+
+              fs.writeFileSync('README.md', readme);
+              console.log(`Updated README with ${filtered.length} repos.`);
+            } else {
+              console.log('Markers not found in README.');
+            }
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "GRANTON-ui"
+          git config user.email "grantonmokua@gmail.com"
+          git diff --quiet && exit 0
+          git add README.md
+          git commit -m "docs: auto-update featured repos"
+          git push
