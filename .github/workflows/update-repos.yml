@@ -2,10 +2,13 @@ name: Update Featured Repos
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Every 6 hours
-  workflow_dispatch:       # Manual trigger
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
   push:
     branches: [main]
+
+permissions:
+  contents: write
 
 jobs:
   update-readme:
@@ -20,7 +23,6 @@ jobs:
           script: |
             const fs = require('fs');
 
-            // Fetch all public repos
             const repos = await github.rest.repos.listForUser({
               username: 'GRANTON-ui',
               type: 'public',
@@ -28,12 +30,10 @@ jobs:
               per_page: 100,
             });
 
-            // Filter out the profile repo itself, sort by stars then by date
             const filtered = repos.data
               .filter(r => r.name !== 'GRANTON-ui' && !r.fork)
               .sort((a, b) => b.stargazers_count - a.stargazers_count);
 
-            // Build the featured list
             const lines = filtered.map(r => {
               const lang = r.language ? ` \`${r.language}\`` : '';
               const stars = r.stargazers_count > 0 ? ` ⭐ ${r.stargazers_count}` : '';
@@ -45,7 +45,6 @@ jobs:
               ? lines.join('\n')
               : '_No public repos yet._';
 
-            // Read README and replace between markers
             let readme = fs.readFileSync('README.md', 'utf-8');
             const startMarker = '<!-- REPOS:START -->';
             const endMarker = '<!-- REPOS:END -->';
