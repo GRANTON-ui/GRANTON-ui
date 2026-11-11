@@ -1,12 +1,26 @@
-### Hey, I'm Granton 👋
+<div align="center">
+  <img src="./assets/header.gif" alt="Granton Mokua" width="100%" />
+</div>
 
-Open-source developer from Stockholm, Sweden.
+<br/>
 
-#### What I work with
+### ⚡ About Me
+I'm **Granton**, an autonomous systems architect and open-source engineer based in **Stockholm, Sweden 🇸🇪**. Focused on distributed multi-agent intelligence, real-time audio/voice pipelines, and resilient cloud architectures.
 
-`TypeScript` `Python` `Node.js` `React` `Next.js` `Express` `Tailwind CSS`
+```yaml
+identity: Granton Mokua
+location: Stockholm, Sweden 🇸🇪
+flagship: M.Jay Sovereign Autonomous Multi-Agent OS
+passions: ["AI Swarms", "Hedge Architectures", "High-Performance Backends"]
+status: "Building next-generation sovereign AI ●"
+```
 
-#### Featured work
+#### 🛠️ Tech & Tooling
+`TypeScript` `Python` `FastAPI` `Node.js` `React` `Next.js` `Docker` `Oracle Cloud (OCI)` `Tailwind CSS`
+
+---
+
+#### 🌟 Featured Open-Source Repositories
 
 <!-- REPOS:START -->
 - [**loghound**](https://github.com/GRANTON-ui/loghound) — AI-powered log diagnostics engine that analyzes server logs, stack traces, and infrastructure failures to identify root causes and recommend fixes. `TypeScript` ⭐ 15
@@ -15,4 +29,6 @@ Open-source developer from Stockholm, Sweden.
 
 ---
 
-<sub>📫 grantonmokua@gmail.com</sub>
+<div align="center">
+  <sub>📫 Contact: <a href="mailto:grantonmokua@gmail.com">grantonmokua@gmail.com</a> • Built with autonomous precision</sub>
+</div>
