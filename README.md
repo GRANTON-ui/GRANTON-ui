@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./assets/header.gif" alt="Granton Mokua" width="100%" />
+  <img src="./assets/banner.gif" alt="Granton Mokua" width="100%" />
 </div>
 
 <br/>
